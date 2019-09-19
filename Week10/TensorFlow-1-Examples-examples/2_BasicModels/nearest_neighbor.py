@@ -24,9 +24,11 @@ Xte, Yte = mnist.test.next_batch(200) #200 for testing
 xtr = tf.placeholder("float", [None, 784])
 xte = tf.placeholder("float", [784])
 
+# 最近邻算法，L1距离（曼哈顿距离，城市区块距离）
 # Nearest Neighbor calculation using L1 Distance
 # Calculate L1 Distance
 distance = tf.reduce_sum(tf.abs(tf.add(xtr, tf.negative(xte))), reduction_indices=1)
+
 # Prediction: Get min distance index (Nearest neighbor)
 pred = tf.math.argmin(distance, 0)
 
@@ -38,14 +40,17 @@ init = tf.global_variables_initializer()
 # Launch the graph
 with tf.Session() as sess:
     sess.run(init)
+    
     # loop over test data
     for i in range(len(Xte)):
         # Get nearest neighbor
+        # pred包含计算distance的过程，所以需要传入两个参数
         nn_index = sess.run(pred, feed_dict={xtr: Xtr, xte: Xte[i, :]})
+        
         # Get nearest neighbor class label and compare it to its true label
-        print("Test", i, "Prediction:", np.argmax(Ytr[nn_index]), \
-            "True Class:", np.argmax(Yte[i]))
-        # Calculate accuracy
+        print("Test", i, "Prediction:", np.argmax(Ytr[nn_index]), "True Class:", np.argmax(Yte[i]))
+        
+        # Calculate accuracy（在训练集上的accuracy）
         if np.argmax(Ytr[nn_index]) == np.argmax(Yte[i]):
             accuracy += 1./len(Xte)
     print("Done!")
