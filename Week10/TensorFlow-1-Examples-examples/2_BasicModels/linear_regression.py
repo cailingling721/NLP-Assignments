@@ -29,11 +29,11 @@ X = tf.placeholder("float")
 Y = tf.placeholder("float")
 
 # Set model weights
-W = tf.Variable(rng.randn(), name="weight")
-b = tf.Variable(rng.randn(), name="bias")
+W = tf.Variable(numpy.random.randn(), name="weight")
+b = tf.Variable(numpy.random.randn(), name="bias")
 
 # Construct a linear model
-pred = tf.add(tf.mul(X, W), b)
+pred = tf.add(tf.multiply(X, W), b)
 
 # Mean squared error
 cost = tf.reduce_sum(tf.pow(pred-Y, 2))/(2*n_samples)
@@ -55,8 +55,7 @@ with tf.Session() as sess:
         # Display logs per epoch step
         if (epoch+1) % display_step == 0:
             c = sess.run(cost, feed_dict={X: train_X, Y:train_Y})
-            print("Epoch:", '%04d' % (epoch+1), "cost=", "{:.9f}".format(c), \
-                "W=", sess.run(W), "b=", sess.run(b))
+            print("Epoch:", '%04d' % (epoch+1), "cost=", "{:.9f}".format(c), "W=", sess.run(W), "b=", sess.run(b))
 
     print("Optimization Finished!")
     training_cost = sess.run(cost, feed_dict={X: train_X, Y: train_Y})
