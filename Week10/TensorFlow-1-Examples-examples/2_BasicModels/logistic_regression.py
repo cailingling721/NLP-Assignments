@@ -33,7 +33,9 @@ b = tf.Variable(tf.zeros([10]))
 pred = tf.nn.softmax(tf.matmul(x, W) + b) # Softmax
 
 # Minimize error using cross entropy
+# 交叉熵的计算：- 求和（真实y * log(预测y)）
 cost = tf.reduce_mean(-tf.reduce_sum(y*tf.log(pred), reduction_indices=1))
+
 # Gradient Descent
 optimizer = tf.train.GradientDescentOptimizer(learning_rate).minimize(cost)
 
@@ -48,14 +50,18 @@ with tf.Session() as sess:
     for epoch in range(training_epochs):
         avg_cost = 0.
         total_batch = int(mnist.train.num_examples/batch_size)
+        
         # Loop over all batches
         for i in range(total_batch):
             batch_xs, batch_ys = mnist.train.next_batch(batch_size)
+            
             # Run optimization op (backprop) and cost op (to get loss value)
-            _, c = sess.run([optimizer, cost], feed_dict={x: batch_xs,
-                                                          y: batch_ys})
+            # 其实linear regression同样也是sess.run了两次，只不过两次分开了，这里没有分开
+            _, c = sess.run([optimizer, cost], feed_dict={x: batch_xs, y: batch_ys})
+            
             # Compute average loss
             avg_cost += c / total_batch
+        
         # Display logs per epoch step
         if (epoch+1) % display_step == 0:
             print("Epoch:", '%04d' % (epoch+1), "cost=", "{:.9f}".format(avg_cost))
@@ -64,6 +70,7 @@ with tf.Session() as sess:
 
     # Test model
     correct_prediction = tf.equal(tf.argmax(pred, 1), tf.argmax(y, 1))
+    
     # Calculate accuracy
     accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
     print("Accuracy:", accuracy.eval({x: mnist.test.images, y: mnist.test.labels}))
