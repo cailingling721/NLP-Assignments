@@ -90,7 +90,7 @@ sigmoid 和 softmax的对比：refer to https://blog.nex3z.com/2017/05/02/sigmoi
         它在多元分类（Multiclass Classification）和神经网络中也有很多应用。Softmax 不同于普通的 max 函数：max 函数只输出最大的那个值，
         而 Softmax 则确保较小的值也有较小的概率，不会被直接舍弃掉，是一个比较“Soft”的“max”。
 """
-cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(pred, y))
+cost = tf.reduce_mean(tf.nn.softmax_cross_entropy_with_logits(logits = pred, labels = y))
 optimizer = tf.train.AdamOptimizer(learning_rate=learning_rate).minimize(cost)
 
 # Initializing the variables
