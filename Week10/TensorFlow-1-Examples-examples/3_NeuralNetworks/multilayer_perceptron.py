@@ -32,7 +32,7 @@ x = tf.placeholder("float", [None, n_input])
 y = tf.placeholder("float", [None, n_classes])
 
 
-# Create model
+# Create model，只有前向传播，没有后向传播
 def multilayer_perceptron(x, weights, biases):
     
     # Hidden layer with RELU activation
