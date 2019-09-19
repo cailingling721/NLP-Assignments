@@ -52,7 +52,7 @@ with tf.Session() as sess:
         for (x, y) in zip(train_X, train_Y):
             sess.run(optimizer, feed_dict={X: x, Y: y})
 
-        # Display logs per epoch step
+        # Display loss per epoch step
         if (epoch+1) % display_step == 0:
             c = sess.run(cost, feed_dict={X: train_X, Y:train_Y})
             print("Epoch:", '%04d' % (epoch+1), "cost=", "{:.9f}".format(c), "W=", sess.run(W), "b=", sess.run(b))
