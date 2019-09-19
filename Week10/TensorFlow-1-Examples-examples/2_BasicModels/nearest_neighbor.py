@@ -44,13 +44,13 @@ with tf.Session() as sess:
     # loop over test data
     for i in range(len(Xte)):
         # Get nearest neighbor
-        # pred包含计算distance的过程，所以需要传入两个参数
+        # pred包含计算distance的过程，所以需要传入两个参数，得到的是测试集中每一个sample的最近邻的index。
         nn_index = sess.run(pred, feed_dict={xtr: Xtr, xte: Xte[i, :]})
         
         # Get nearest neighbor class label and compare it to its true label
         print("Test", i, "Prediction:", np.argmax(Ytr[nn_index]), "True Class:", np.argmax(Yte[i]))
         
-        # Calculate accuracy（在训练集上的accuracy）
+        # Calculate accuracy（在测试集上的accuracy）
         if np.argmax(Ytr[nn_index]) == np.argmax(Yte[i]):
             accuracy += 1./len(Xte)
     print("Done!")
